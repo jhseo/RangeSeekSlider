@@ -199,8 +199,25 @@ import UIKit
     /// Handle border width (default 0.0)
     @IBInspectable open var handleBorderWidth: CGFloat = 0.0 {
         didSet {
-            leftHandle.borderWidth = handleBorderWidth
-            rightHandle.borderWidth = handleBorderWidth
+            let borderWidth = handleDiameter + handleBorderWidth * 2
+
+            let leftHandleBorder = CALayer()
+            leftHandleBorder.frame = CGRect(x: -handleBorderWidth, y: -handleBorderWidth, width: borderWidth, height: borderWidth)
+            leftHandleBorder.borderColor = handleBorderColor.map { $0.cgColor }
+            leftHandleBorder.borderWidth = handleBorderWidth
+            leftHandleBorder.cornerRadius = borderWidth / 2
+            leftHandleBorder.name = "leftHandleBorder"
+
+            leftHandle.insertSublayer(leftHandleBorder, at: 0)
+
+            let rightHandleBorder = CALayer()
+            rightHandleBorder.frame = CGRect(x: -handleBorderWidth, y: -handleBorderWidth, width: borderWidth, height: borderWidth)
+            rightHandleBorder.borderColor = handleBorderColor.map { $0.cgColor }
+            rightHandleBorder.borderWidth = handleBorderWidth
+            rightHandleBorder.cornerRadius = borderWidth / 2
+            rightHandleBorder.name = "rightHandleBorder"
+
+            rightHandle.insertSublayer(rightHandleBorder, at: 0)
         }
     }
 
@@ -541,7 +558,6 @@ import UIKit
             minLabel.foregroundColor = initialColor
             maxLabel.foregroundColor = initialColor
             sliderLineBetweenHandles.backgroundColor = initialColor
-            sliderLine.backgroundColor = initialColor
             nonPaddingSliderLine.backgroundColor = initialColor
 
             let color: CGColor = (handleImage == nil) ? initialColor : UIColor.clear.cgColor
@@ -554,7 +570,6 @@ import UIKit
             minLabel.foregroundColor = minLabelColor?.cgColor ?? tintCGColor
             maxLabel.foregroundColor = maxLabelColor?.cgColor ?? tintCGColor
             sliderLineBetweenHandles.backgroundColor = colorBetweenHandles?.cgColor ?? tintCGColor
-            sliderLine.backgroundColor = tintCGColor
             nonPaddingSliderLine.backgroundColor = tintCGColor
 
             let color: CGColor
